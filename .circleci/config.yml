@@ -120,14 +120,10 @@ jobs:
 workflows:
   default:
     jobs:
-      - hello-world
       - backend-build:
           requires:
             - backend-npmaudit
       - udagram-frontend-build
-      - backend-test:
-          requires:
-            - backend-build
       - udagram-frontend-test:
           requires:
             - udagram-frontend-build
