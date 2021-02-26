@@ -84,7 +84,7 @@ jobs:
           command: |
             echo "frontend tests have failed, placeholder for later"
           when: on_fail
-  deploy_frontend:
+  deploy-frontend:
     docker:
       - image: circleci/aws-s3@2.0.0
     steps:
