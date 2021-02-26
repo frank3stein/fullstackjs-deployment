@@ -119,9 +119,7 @@ jobs:
 workflows:
   default:
     jobs:
-      - backend-build:
-          requires:
-            - backend-npmaudit
+      - backend-build
       - udagram-frontend-build
       - udagram-frontend-test:
           requires:
