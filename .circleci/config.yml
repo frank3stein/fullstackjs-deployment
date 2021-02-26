@@ -1,8 +1,7 @@
 version: 2.1
 orbs:
-  aws-elastic-beanstalk: circleci/aws-elastic-beanstalk@1.0.1
+  eb: circleci/aws-elastic-beanstalk@1.0.1
   aws-s3: circleci/aws-s3@2.0.0
-
 jobs:
   hello-world:
     docker:
