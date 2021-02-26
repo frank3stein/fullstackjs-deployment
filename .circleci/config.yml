@@ -96,9 +96,9 @@ jobs:
       - aws-s3/sync:
           arguments: |
             --delete
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-region: AWS_REGION
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          aws-access-key-id: ${AWS_ACCESS_KEY_ID}
+          aws-region: ${AWS_REGION}
+          aws-secret-access-key: ${AWS_SECRET_ACCESS_KEY}
           from: www
           to: 's3://fullstack-js-deployment'
       - persist_to_workspace:
@@ -130,4 +130,7 @@ workflows:
           filters:
             branches:
               only: master # Only deploy when the commit is on the Master branch
-      - eb-deployment
+      - eb-deployment:
+          requires:
+            - backend-build
+            - udagram-frontend-test
