@@ -132,7 +132,8 @@ workflows:
       #     requires:
       #       - udagram-frontend-build
       - deploy-frontend:
-          # requires:
+          requires:
+            - udagram-frontend-build
           #   - udagram-frontend-test
           filters:
             branches:
