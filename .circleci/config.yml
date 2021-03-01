@@ -31,7 +31,7 @@ jobs:
             npm ci
             npm run build
             cp -a .elasticbeanstalk /www/.elasticbeanstalk
-            ls 
+          
             ls /www
             ls /www/.elasticbeanstalk
       # - save_cache:
@@ -41,8 +41,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - udagram-api/node_modules
-            - udagram-api/www
+            - udagram-api/www/Archive.zip
   udagram-frontend-build:
     docker:
       - image: circleci/node:13.8.0
@@ -75,6 +74,9 @@ jobs:
       - run:
           name: Run frontend lint
           command: |
+            ls -a
+            ls -a udagram-frontend/www
+            ls -a udagram-frontend
             cd udagram-frontend
             npm run lint
       - run:
