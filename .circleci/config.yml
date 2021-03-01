@@ -118,7 +118,6 @@ jobs:
       - eb/setup
       - run:
           command: |
-            eb init Fullstack-env --region $AWS_REGION --platform Node 12.21.0
             eb deploy
             eb status
           name: You may now use the EB CLI within this job
