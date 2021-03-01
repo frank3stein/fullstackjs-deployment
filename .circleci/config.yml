@@ -85,7 +85,7 @@ jobs:
           when: on_fail
   deploy-frontend:
     docker:
-      - image: circleci/aws-s3@2.0.0
+      - image: 'cimg/python:3.6'
     steps:
       - checkout
       - attach_workspace:
@@ -93,6 +93,7 @@ jobs:
       - run: |
           cd udagram-frontend
           echo $AWS_REGION
+          echo $AWS_DEFAULT_REGION
       - aws-s3/sync:
           arguments: |
             --delete
