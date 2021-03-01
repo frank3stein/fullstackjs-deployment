@@ -131,17 +131,17 @@ workflows:
     jobs:
       - backend-build
       - udagram-frontend-build
-      # - udagram-frontend-test:
-      #     requires:
-      #       - udagram-frontend-build
+      - udagram-frontend-test:
+          requires:
+            - udagram-frontend-build
       - deploy-frontend:
           requires:
             - udagram-frontend-build
-          #   - udagram-frontend-test
+            - udagram-frontend-test
           filters:
             branches:
               only: master # Only deploy when the commit is on the Master branch
       - eb-deployment:
           requires:
             - backend-build
-            # - udagram-frontend-test
+            - udagram-frontend-test
