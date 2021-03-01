@@ -140,4 +140,4 @@ workflows:
       - eb-deployment:
           requires:
             - backend-build
-            - udagram-frontend-test
+            # - udagram-frontend-test
