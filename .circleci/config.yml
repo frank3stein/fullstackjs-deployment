@@ -118,6 +118,7 @@ jobs:
       - eb/setup
       - run:
           command: |
+            cd udagram-api
             eb deploy
             eb status
           name: You may now use the EB CLI within this job
