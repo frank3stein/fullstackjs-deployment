@@ -30,6 +30,10 @@ jobs:
             cd udagram-api
             npm ci
             npm run build
+            cp -a .elasticbeanstalk /www/.elasticbeanstalk
+            ls 
+            ls /www
+            ls /www/.elasticbeanstalk
       # - save_cache:
       #     key: backend-{{ checksum "package-lock.json" }}
       #     paths:
@@ -91,7 +95,9 @@ jobs:
       - attach_workspace:
           at: .
       - run: |
+          ls
           cd udagram-frontend
+          ls
           echo $AWS_REGION
           echo $AWS_DEFAULT_REGION
       - aws-s3/sync:
@@ -122,9 +128,9 @@ workflows:
     jobs:
       - backend-build
       - udagram-frontend-build
-      - udagram-frontend-test:
-          requires:
-            - udagram-frontend-build
+      # - udagram-frontend-test:
+      #     requires:
+      #       - udagram-frontend-build
       - deploy-frontend:
           requires:
             - udagram-frontend-test
