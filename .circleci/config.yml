@@ -30,10 +30,6 @@ jobs:
             cd udagram-api
             npm ci
             npm run build
-            cp -a .elasticbeanstalk /www/.elasticbeanstalk
-          
-            ls /www
-            ls /www/.elasticbeanstalk
       # - save_cache:
       #     key: backend-{{ checksum "package-lock.json" }}
       #     paths:
@@ -108,7 +104,7 @@ jobs:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-region: AWS_REGION
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          from: www
+          from: www/
           to: 's3://fullstack-js-deployment'
       - persist_to_workspace:
           root: .
