@@ -104,7 +104,7 @@ jobs:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-region: AWS_REGION
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          from: ./www
+          from: udagram-frontend/www
           to: 's3://fullstack-js-deployment'
       - persist_to_workspace:
           root: .
@@ -118,7 +118,7 @@ jobs:
       - eb/setup
       - run:
           command: |
-            eb init 
+            eb init Fullstack-env --region $AWS_REGION --platform Node.js 12 running on 64bit Amazon Linux 2
             eb deploy
             eb status
           name: You may now use the EB CLI within this job
