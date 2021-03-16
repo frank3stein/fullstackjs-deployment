@@ -3,21 +3,6 @@ orbs:
   eb: circleci/aws-elastic-beanstalk@1.0.1
   aws-s3: circleci/aws-s3@2.0.0
 jobs:
-  hello-world:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-      - checkout
-      - run:
-          name: We get a new workflow ID
-          command: |
-            PREVIOUS_WORKFLOW_ID=$(curl -H "token: bc99fda4-cac2-4d84-bb29-aae87cbbcbbf" --request GET https://api.memstash.io/values/fullstackjs-deployment)
-            #current build
-            # not needed  as workflow id is accessible. Left it for easy copy paste, TODO: Remove in the end
-            # curl -H "Content-Type: text/plain" -H "token: 46625e97-d058-4336-8b58-1d18131d9bfe" --request PUT --data "${CIRCLE_WORKFLOW_ID}" https://api.memstash.io/values/fullstackjs-deployment
-            echo "commit sha1 ${CIRCLE_SHA1}"
-            echo "Candidate id: ${CIRCLE_WORKFLOW_ID}"
-            echo "Production id: ${PREVIOUS_WORKFLOW_ID}"
   backend-build:
     docker:
       - image: circleci/node:13.8.0
@@ -25,15 +10,9 @@ jobs:
       - checkout
       - run:
           name: Backend Build
+          # the build process has a preprocess hook for install
           command: |
-            ls
-            cd udagram-api
-            npm ci
-            npm run build
-      # - save_cache:
-      #     key: backend-{{ checksum "package-lock.json" }}
-      #     paths:
-      #       - backend/node_modules
+            npm run backend:build
       - persist_to_workspace:
           root: .
           paths:
@@ -45,14 +24,9 @@ jobs:
       - checkout
       - run:
           name: udagram-frontend Build
+          # the build process has a preprocess hook for install
           command: |
-            cd udagram-frontend
-            npm ci
-            npm run build
-      # - save_cache:
-      #     key: udagram-frontend-{{ checksum "./udagram-frontend/package-lock.json" }}
-      #     paths:
-      #       - udagram-frontend/node_modules
+            npm run frontend:build
       - persist_to_workspace:
           root: .
           paths:
@@ -63,23 +37,17 @@ jobs:
       - image: circleci/node:10-browsers
     steps:
       - checkout
-      # - restore_cache:
-      #     keys: udagram-frontend-{{ checksum "./udagram-frontend/package-lock.json" }}
       - attach_workspace:
           at: .
       - run:
+          # runs the linting first, if it passes runs the tests
           name: Run frontend lint
           command: |
-            ls -a
-            ls -a udagram-frontend/www
-            ls -a udagram-frontend
-            cd udagram-frontend
-            npm run lint
+            npm run frontend:lint
       - run:
           name: Run frontend test
           command: |
-            cd udagram-frontend
-            npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+            npm run frontend:test
       - run:
           name: frontend Tests failed
           command: |
@@ -92,12 +60,12 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
+        # using an orb to deploy it to AWS easily
+        # you can modify this code by using the npm run frontend:deployWithoutOrb
+        # to deploy without depending on the orb or circle ci
+        # i left both of them as options
       - run: |
-          ls
-          cd udagram-frontend
-          ls
-          echo $AWS_REGION
-          echo $AWS_DEFAULT_REGION
+          npm run frontend:deploy
       - aws-s3/sync:
           arguments: |
             --delete
@@ -120,11 +88,7 @@ jobs:
           at: .
       - run:
           command: |
-            ls
-            cd udagram-api
-            ls 
-            eb deploy
-            eb status
+            npm run backend:deploy
           name: You may now use the EB CLI within this job
 workflows:
   default:
@@ -134,6 +98,7 @@ workflows:
       - udagram-frontend-test:
           requires:
             - udagram-frontend-build
+      # frontend is only deployed if the tests pass, that includes linting pretests.
       - deploy-frontend:
           requires:
             - udagram-frontend-build
