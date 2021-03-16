@@ -86,11 +86,11 @@ jobs:
       - image: 'cimg/base:stable'
     steps:
       - checkout
+      - attach_workspace:
+          at: .
       - run: 
           command: |
             ./setup_elbcli.bash
-      - attach_workspace:
-          at: .
       - run:
           command: |
             npm run backend:deploy
