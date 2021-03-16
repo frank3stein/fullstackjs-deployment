@@ -90,6 +90,7 @@ jobs:
           at: .
       - run: 
           command: |
+            chmod x+ ./setup_elbcli.sh
             ./setup_elbcli.sh
       - run:
           command: |
