@@ -86,7 +86,9 @@ jobs:
       - image: 'cimg/base:stable'
     steps:
       - checkout
-      - eb/setup
+      - run: 
+          command: |
+            ./setup_elbcli.bash
       - attach_workspace:
           at: .
       - run:
