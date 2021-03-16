@@ -4,6 +4,9 @@ if [[ $EUID == 0 ]]; then export SUDO=""; else # Check if we are root
   export SUDO="sudo";
 fi
 
+curl -fsSL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
 SetupPython() {
     # setups python3
     $SUDO apt-get -qq -y install python3-dev

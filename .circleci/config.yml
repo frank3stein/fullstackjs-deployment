@@ -94,9 +94,7 @@ jobs:
             ./setup_elbcli.bash
       - run:
           command: |
-            cd udagram-api
-            eb deploy
-            eb status
+            npm run backend:deploy
           name: You may now use the EB CLI within this job
 workflows:
   default:
