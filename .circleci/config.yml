@@ -60,12 +60,15 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-        # using an orb to deploy it to AWS easily
-        # you can modify this code by using the npm run frontend:deployWithoutOrb
+        # The script is using an orb to deploy it to AWS easily
+        # You can modify this code by using the npm run frontend:deployWithoutOrb
         # to deploy without depending on the orb or circle ci
-        # i left both of them as options
+        # Both options are in the root level package.json deploy scripts     
+        ###################################
+        # I chose to use cd here, otherwise I need to install an image with npm installed in it
+        # I think using cd instead is a simple tradeoff
       - run: |
-          npm run frontend:deploy
+          cd udagram-frontend
       - aws-s3/sync:
           arguments: |
             --delete
