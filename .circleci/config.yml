@@ -90,7 +90,7 @@ jobs:
           at: .
       - run: 
           command: |
-            ./setup_elbcli.bash
+            ./setup_elbcli.sh
       - run:
           command: |
             npm run backend:deploy
